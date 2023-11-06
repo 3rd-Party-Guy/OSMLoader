@@ -6,7 +6,7 @@ class Road : BaseInfrastructure
 {
     public Material roadMat;
 
-    public int NodeCount {
+    public override int NodeCount {
         get => map.ways.FindAll((w) => { return w.IsRoad; }).Count;
     }
 
@@ -14,7 +14,7 @@ class Road : BaseInfrastructure
         roadMat = roadMaterial;
     }
 
-    public IEnumerable<int> Process() {
+    public override IEnumerable<int> Process() {
         int count = 0;
 
         foreach (var way in map.ways.FindAll((w) => {

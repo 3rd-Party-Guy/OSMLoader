@@ -4,11 +4,16 @@ using UnityEngine;
 
 internal abstract class BaseInfrastructure
 {
+    public abstract int NodeCount { get; }
+
+    public abstract IEnumerable<int> Process();
+
     protected MapReader map;
 
     public BaseInfrastructure(MapReader mapReader) {
         map = mapReader;
     }
+
 
     protected Vector3 GetCentre(OSMWay way) {
         Vector3 total = Vector3.zero;

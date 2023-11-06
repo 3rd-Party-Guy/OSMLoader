@@ -6,7 +6,7 @@ internal sealed class Building : BaseInfrastructure
 {
     private Material buildingMat;
 
-    public int NodeCount {
+    public override int NodeCount {
         get => map.ways.FindAll((w) => { return w.IsBuilding && w.NodeIDs.Count > 1; }).Count;
     }
 
@@ -14,7 +14,7 @@ internal sealed class Building : BaseInfrastructure
         buildingMat = buildingMaterial;
     }
 
-    public IEnumerable<int> Process() {
+    public override IEnumerable<int> Process() {
         int count = 0;
 
         foreach(var way in map.ways.FindAll((w) => {

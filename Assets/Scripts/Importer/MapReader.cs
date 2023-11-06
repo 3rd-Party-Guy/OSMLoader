@@ -10,7 +10,7 @@ internal sealed class MapReader
     [HideInInspector] public List<OSMWay> ways;
     [HideInInspector] public OSMBounds bounds;
 
-    public void InitializeMap(string osmDataFile) {
+    public void Read(string osmDataFile) {
         nodes = new Dictionary<ulong, OSMNode>();
         ways = new List<OSMWay>();
 
