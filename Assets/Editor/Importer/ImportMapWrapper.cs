@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 internal sealed class ImportMapWrapper {
-    private DataImportWindow window;
+    private DataImportWindow importWindow;
     private string dataFile;
     private Material roadMat;
     private Material buildingMat;
