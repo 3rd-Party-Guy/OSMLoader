@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class Road : InfrastructureBehaviour
+class Road : BaseInfrastructure
 {
     public Material roadMat;
 
-    IEnumerator Start() {
-        while (!map.IsReady)
-            yield return null;
+    public int NodeCount {
+        get => map.ways.FindAll((w) => { return w.IsRoad; }).Count;
+    }
+
+    public Road(MapReader mapReader, Material roadMaterial) : base(mapReader) {
+        roadMat = roadMaterial;
+    }
+
+    public IEnumerable<int> Process() {
+        int count = 0;
 
         foreach (var way in map.ways.FindAll((w) => {
             return w.IsRoad;
         })) {
             CreateObject(way, roadMat, way.Name);
-            yield return null;
+            count++;
+            yield return count;
         }
     }
 

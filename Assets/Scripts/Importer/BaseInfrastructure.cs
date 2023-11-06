@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MapReader))]
-abstract class InfrastructureBehaviour : MonoBehaviour
+internal abstract class BaseInfrastructure
 {
     protected MapReader map;
 
-    private void Awake() {
-        map = GetComponent<MapReader>();
+    public BaseInfrastructure(MapReader mapReader) {
+        map = mapReader;
     }
 
     protected Vector3 GetCentre(OSMWay way) {

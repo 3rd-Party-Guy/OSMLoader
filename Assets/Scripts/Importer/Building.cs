@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-internal sealed class Building : InfrastructureBehaviour
+internal sealed class Building : BaseInfrastructure
 {
-    private Material building;
+    private Material buildingMat;
 
-    IEnumerator Start() {
-        while (!map.IsReady)
-            yield return null;
-        
+    public int NodeCount {
+        get => map.ways.FindAll((w) => { return w.IsBuilding && w.NodeIDs.Count > 1; }).Count;
+    }
+
+    public Building(MapReader mapReader, Material buildingMaterial) : base(mapReader) {
+        buildingMat = buildingMaterial;
+    }
+
+    public IEnumerable<int> Process() {
+        int count = 0;
+
         foreach(var way in map.ways.FindAll((w) => {
             return w.IsBuilding && w.NodeIDs.Count > 1;
         })) {
-            CreateObject(way, building, "Building");
-            yield return null;
+            CreateObject(way, buildingMat, "Building");
+            count++;
+            yield return count;
         }
     }
 
