@@ -79,7 +79,6 @@ public class DataImportWindow : EditorWindow {
     }
 
     private void OnImport() {
-        Debug.Log("This gets called");
         isImporting = true;
 
         ImportMapWrapper mapWrapper = new ImportMapWrapper(this, osmFilePath, roadMaterial, buildingMaterial);

@@ -14,17 +14,6 @@ class Road : BaseInfrastructure
         roadMat = roadMaterial;
     }
 
-    public override IEnumerable<int> Process() {
-        int count = 0;
-
-        foreach (var way in map.ways.FindAll((w) => {
-            return w.IsRoad;
-        })) {
-            CreateObject(way, roadMat, way.Name);
-            count++;
-            yield return count;
-        }
-    }
 
     protected override void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices) {
         for (int i = 1; i < way.NodeIDs.Count; i++) {
@@ -73,6 +62,18 @@ class Road : BaseInfrastructure
             indices.Add(idx3);
             indices.Add(idx4);
             indices.Add(idx2);
+        }
+    }
+    
+    public override IEnumerable<int> Process() {
+        int count = 0;
+
+        foreach (var way in map.ways.FindAll((w) => {
+            return w.IsRoad;
+        })) {
+            CreateObject(way, roadMat, way.Name);
+            count++;
+            yield return count;
         }
     }
 }
