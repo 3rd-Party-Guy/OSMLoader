@@ -39,7 +39,7 @@ internal sealed class Building : BaseInfrastructure
 
             Vector3 v1 = p1 - origin;
             Vector3 v2 = p2 - origin;
-            Vector3 v3 = v1 = new Vector3(0, way.Height, 0);
+            Vector3 v3 = v1 + new Vector3(0, way.Height, 0);
             Vector3 v4 = v2 + new Vector3(0, way.Height, 0);
 
             vectors.Add(v1);
