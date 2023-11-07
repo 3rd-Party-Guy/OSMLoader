@@ -45,9 +45,9 @@ internal abstract class BaseInfrastructure
 
         OnObjectCreated(way, localOrigin, vectors, normals, uvs, indices);
 
-        mf.mesh.vertices = vectors.ToArray();
-        mf.mesh.normals = normals.ToArray();
-        mf.mesh.triangles = indices.ToArray();
-        mf.mesh.uv = uvs.ToArray();
+        mf.sharedMesh.vertices = vectors.ToArray();
+        mf.sharedMesh.normals = normals.ToArray();
+        mf.sharedMesh.triangles = indices.ToArray();
+        mf.sharedMesh.uv = uvs.ToArray();
     }
 }

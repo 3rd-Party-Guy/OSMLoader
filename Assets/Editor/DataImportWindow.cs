@@ -9,8 +9,13 @@ public class DataImportWindow : EditorWindow {
     private Material buildingMaterial;
 
     private string osmFilePath = "OSM Data File Path";
+    private string importProgressText;
+
+    private float importProgress;
+
     private bool isSceneNotSaved = false;
     private bool isFileValid = false;
+    private bool isImporting = false;
 
     [MenuItem("Window/OSMLoader/Data Importer")]
     private static void ShowWindow() {
@@ -41,14 +46,32 @@ public class DataImportWindow : EditorWindow {
         EditorGUILayout.Space();
         GUILayout.FlexibleSpace();
 
-        EditorGUI.BeginDisabledGroup(!isFileValid || isSceneNotSaved);
+        EditorGUI.BeginDisabledGroup(!isFileValid || isSceneNotSaved || isImporting);
             if (GUILayout.Button("Import OSM Data")) {
                 OnImport();
             }
         EditorGUI.EndDisabledGroup();
 
+        if (isImporting) {
+            Rect rect = EditorGUILayout.BeginHorizontal();
+                EditorGUI.ProgressBar(rect, importProgress, importProgressText);
+            EditorGUILayout.EndHorizontal();
+        }
+
         if (isSceneNotSaved)
             EditorGUILayout.HelpBox("Scene is not saved!", MessageType.Warning, true);
+    }
+
+    public void UpdateImportProgress(float progress, string progressText) {
+        importProgress = progress;
+        importProgressText = progressText;
+
+        Repaint();
+    }
+
+    public void ResetProgress() {
+        importProgress = 0f;
+        importProgressText = "";
     }
 
     private void Update() {
@@ -57,5 +80,11 @@ public class DataImportWindow : EditorWindow {
 
     private void OnImport() {
         Debug.Log("This gets called");
+        isImporting = true;
+
+        ImportMapWrapper mapWrapper = new ImportMapWrapper(this, osmFilePath, roadMaterial, buildingMaterial);
+        mapWrapper.Import();
+
+        isImporting = false;
     }
 }
