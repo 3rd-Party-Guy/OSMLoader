@@ -22,17 +22,14 @@ internal sealed class MapReader
         GetNodes(doc.SelectNodes("/osm/node"));
         GetWays(doc.SelectNodes("/osm/way"));
 
-        float minx = (float)MercatorProjection.lonToX(bounds.MinLon);
-        float maxx = (float)MercatorProjection.lonToX(bounds.MaxLon);
-        float miny = (float)MercatorProjection.latToY(bounds.MinLat);
-        float maxy = (float)MercatorProjection.latToY(bounds.MaxLat);
+        // float minx = (float)MercatorProjection.lonToX(bounds.MinLon);
+        // float maxx = (float)MercatorProjection.lonToX(bounds.MaxLon);
+        // float miny = (float)MercatorProjection.latToY(bounds.MinLat);
+        // float maxy = (float)MercatorProjection.latToY(bounds.MaxLat);
     }
 
-    private void GetWays(XmlNodeList xmlNodeList) {
-        foreach (XmlNode node in xmlNodeList) {
-            OSMWay way = new OSMWay(node);
-            ways.Add(way);
-        }
+    private void SetBounds(XmlNode xmlNode) {
+        bounds = new OSMBounds(xmlNode);
     }
 
     private void GetNodes(XmlNodeList xmlNodeList) {
@@ -41,8 +38,10 @@ internal sealed class MapReader
             nodes[node.ID] = node;
         }
     }
-
-    private void SetBounds(XmlNode xmlNode) {
-        bounds = new OSMBounds(xmlNode);
+    private void GetWays(XmlNodeList xmlNodeList) {
+        foreach (XmlNode node in xmlNodeList) {
+            OSMWay way = new OSMWay(node);
+            ways.Add(way);
+        }
     }
 }

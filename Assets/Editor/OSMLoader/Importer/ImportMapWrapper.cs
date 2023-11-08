@@ -28,8 +28,9 @@ internal sealed class ImportMapWrapper {
 
     private void Process(BaseInfrastructure constructor, string progressText) {
         float nodeCount = (float)constructor.NodeCount;
-
-        foreach (int node in constructor.Process()) {
+        
+        IEnumerable<int> processingNodes = constructor.Process();
+        foreach (int node in processingNodes) {
             float progress = node / nodeCount;
             importWindow.UpdateImportProgress(progress, progressText);
         }

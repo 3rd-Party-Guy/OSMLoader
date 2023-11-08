@@ -50,5 +50,6 @@ internal abstract class BaseInfrastructure
         mf.sharedMesh.normals = normals.ToArray();
         mf.sharedMesh.triangles = indices.ToArray();
         mf.sharedMesh.uv = uvs.ToArray();
+        // mf.sharedMesh.RecalculateNormals();
     }
 }
