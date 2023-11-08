@@ -73,7 +73,7 @@ class Road : BaseInfrastructure
         })) {
             CreateObject(way, roadMat, way.Name);
             count++;
-            yield return count;
         }
+            yield return count;
     }
 }

@@ -53,14 +53,15 @@ public static class MercatorProjection
         double ts = Math.Exp(-y / R_MAJOR);
         double phi = PI_2 - 2 * Math.Atan(ts);
         double dphi = 1.0;
+        
         int i = 0;
-        while ((Math.Abs(dphi) > 0.000000001) && (i < 15))
-        {
+        while ((Math.Abs(dphi) > 0.000000001) && (i < 15)) {
             double con = ECCENT * Math.Sin(phi);
             dphi = PI_2 - 2 * Math.Atan(ts * Math.Pow((1.0 - con) / (1.0 + con), COM)) - phi;
             phi += dphi;
             i++;
         }
+
         return RadToDeg(phi);
     }
 

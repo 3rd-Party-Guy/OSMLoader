@@ -22,10 +22,10 @@ internal sealed class MapReader
         GetNodes(doc.SelectNodes("/osm/node"));
         GetWays(doc.SelectNodes("/osm/way"));
 
-        // float minx = (float)MercatorProjection.lonToX(bounds.MinLon);
-        // float maxx = (float)MercatorProjection.lonToX(bounds.MaxLon);
-        // float miny = (float)MercatorProjection.latToY(bounds.MinLat);
-        // float maxy = (float)MercatorProjection.latToY(bounds.MaxLat);
+        float minx = (float)MercatorProjection.lonToX(bounds.MinLon);
+        float maxx = (float)MercatorProjection.lonToX(bounds.MaxLon);
+        float miny = (float)MercatorProjection.latToY(bounds.MinLat);
+        float maxy = (float)MercatorProjection.latToY(bounds.MaxLat);
     }
 
     private void GetWays(XmlNodeList xmlNodeList) {

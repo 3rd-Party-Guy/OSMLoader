@@ -7,7 +7,11 @@ internal sealed class Building : BaseInfrastructure
     private Material buildingMat;
 
     public override int NodeCount {
-        get => map.ways.FindAll((w) => { return w.IsBuilding && w.NodeIDs.Count > 1; }).Count;
+        get {
+            return map.ways.FindAll((w) => {
+                return w.IsBuilding && w.NodeIDs.Count > 1;
+            }).Count;
+        }
     }
 
     public Building(MapReader mapReader, Material buildingMaterial) : base(mapReader) {
