@@ -16,9 +16,9 @@ public class OSMBounds : BaseOSM
         MaxLon = GetAttribute<float>("maxlon", node.Attributes);
 
         float x = (float)((MercatorProjection.lonToX(MaxLon) + 
-                        MercatorProjection.lonToX(MinLon)) / 2f);
+                        MercatorProjection.lonToX(MinLon)) / 2);
         float y = (float)((MercatorProjection.latToY(MaxLat) +
-                        MercatorProjection.latToY(MinLat)) / 2f);
+                        MercatorProjection.latToY(MinLat)) / 2);
         
         Centre = new Vector3(x, 0, y);
     }

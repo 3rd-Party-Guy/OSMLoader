@@ -31,7 +31,7 @@ public class DataImportWindow : EditorWindow {
             EditorGUI.EndDisabledGroup();
             
             if (GUILayout.Button("...")) {
-                string dataPath = EditorUtility.OpenFilePanel("Select OSM Data File", Application.dataPath, "osm");
+                string dataPath = EditorUtility.OpenFilePanel("Select OSM Data File", Application.dataPath, "osm,txt,xml");
 
                 if (dataPath.Length > 0)
                     osmFilePath = dataPath;

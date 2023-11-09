@@ -2,18 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class Road : BaseInfrastructure
+internal sealed class Road : BaseInfrastructure
 {
     public Material roadMat;
 
     public override int NodeCount {
-        get => map.ways.FindAll((w) => { return w.IsRoad; }).Count;
+        get { return map.ways.FindAll((w) => { return w.IsRoad; }).Count; }
     }
 
     public Road(MapReader mapReader, Material roadMaterial) : base(mapReader) {
         roadMat = roadMaterial;
     }
 
+    public override IEnumerable<int> Process() {
+        int count = 0;
+
+        foreach (var way in map.ways.FindAll((w) => { return w.IsRoad; }))
+        {
+            CreateObject(way, roadMat, way.Name);
+
+            count++;
+            yield return count;
+        }
+    }
 
     protected override void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices) {
         for (int i = 1; i < way.NodeIDs.Count; i++) {
@@ -65,15 +76,4 @@ class Road : BaseInfrastructure
         }
     }
     
-    public override IEnumerable<int> Process() {
-        int count = 0;
-
-        foreach (var way in map.ways.FindAll((w) => {
-            return w.IsRoad;
-        })) {
-            CreateObject(way, roadMat, way.Name);
-            count++;
-        }
-            yield return count;
-    }
 }

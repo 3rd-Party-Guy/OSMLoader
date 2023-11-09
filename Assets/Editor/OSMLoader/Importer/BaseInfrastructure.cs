@@ -4,27 +4,24 @@ using UnityEngine;
 
 internal abstract class BaseInfrastructure
 {
-    public abstract int NodeCount { get; }
-
-    public abstract IEnumerable<int> Process();
-
     protected MapReader map;
+    public abstract int NodeCount { get; }
 
     public BaseInfrastructure(MapReader mapReader) {
         map = mapReader;
     }
+  
+    public abstract IEnumerable<int> Process();
 
-
+    // Problem Found Here?
     protected Vector3 GetCentre(OSMWay way) {
         Vector3 total = Vector3.zero;
 
-        foreach(ulong id in way.NodeIDs)
+        foreach(var id in way.NodeIDs)
             total += map.nodes[id];
 
         return total / way.NodeIDs.Count;
     }
-
-    protected abstract void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices);
 
     protected void CreateObject(OSMWay way, Material mat, string objectName) {
         objectName = string.IsNullOrEmpty(objectName) ? "OSMWay" : objectName;
@@ -52,4 +49,6 @@ internal abstract class BaseInfrastructure
         mf.sharedMesh.uv = uvs.ToArray();
         // mf.sharedMesh.RecalculateNormals();
     }
+
+    protected abstract void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices);
 }

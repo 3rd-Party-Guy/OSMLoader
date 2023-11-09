@@ -29,7 +29,7 @@ public class OSMWay : BaseOSM
         }
 
         if (NodeIDs.Count > 1)
-            IsBoundary = (NodeIDs[0] == NodeIDs[NodeIDs.Count - 1]);
+            IsBoundary = NodeIDs[0] == NodeIDs[NodeIDs.Count - 1];
 
         XmlNodeList tags = node.SelectNodes("tag");
         foreach (XmlNode t in tags) {

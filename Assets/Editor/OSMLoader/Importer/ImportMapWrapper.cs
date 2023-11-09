@@ -22,16 +22,16 @@ internal sealed class ImportMapWrapper {
         Road roadConstructor = new Road(mapReader, roadMat);
         Building buildingConstructor = new Building(mapReader, buildingMat);
 
-        Process(roadConstructor, "Constructing Roads...");
         Process(buildingConstructor, "Constructing Buildings...");
+        Process(roadConstructor, "Constructing Roads...");
     }
 
     private void Process(BaseInfrastructure constructor, string progressText) {
         float nodeCount = (float)constructor.NodeCount;
-        
-        IEnumerable<int> processingNodes = constructor.Process();
-        foreach (int node in processingNodes) {
-            float progress = node / nodeCount;
+        float progress = 0f;
+
+        foreach (int node in constructor.Process()) {
+            progress = node / nodeCount;
             importWindow.UpdateImportProgress(progress, progressText);
         }
     }

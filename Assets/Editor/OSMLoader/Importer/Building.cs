@@ -21,10 +21,10 @@ internal sealed class Building : BaseInfrastructure
     public override IEnumerable<int> Process() {
         int count = 0;
 
-        foreach(var way in map.ways.FindAll((w) => {
-            return w.IsBuilding && w.NodeIDs.Count > 1;
-        })) {
+        foreach (var way in map.ways.FindAll((w) => { return w.IsBuilding && w.NodeIDs.Count > 1; }))
+        {
             CreateObject(way, buildingMat, "Building");
+
             count++;
             yield return count;
         }
