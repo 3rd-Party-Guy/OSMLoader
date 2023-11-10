@@ -6,9 +6,9 @@ using UnityEngine;
 
 internal sealed class MapReader
 {
-    [HideInInspector] public Dictionary<ulong, OSMNode> nodes;
-    [HideInInspector] public List<OSMWay> ways;
-    [HideInInspector] public OSMBounds bounds;
+    public Dictionary<ulong, OSMNode> nodes;
+    public List<OSMWay> ways;
+    public OSMBounds bounds;
 
     public void Read(string osmDataFile) {
         nodes = new Dictionary<ulong, OSMNode>();

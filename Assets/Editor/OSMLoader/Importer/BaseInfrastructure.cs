@@ -17,10 +17,11 @@ internal abstract class BaseInfrastructure
     protected Vector3 GetCentre(OSMWay way) {
         Vector3 total = Vector3.zero;
 
-        foreach(var id in way.NodeIDs)
-            total += map.nodes[id];
+        foreach(ulong id in way.NodeIDs)
+            total += (Vector3)map.nodes[id];
 
-        return total / way.NodeIDs.Count;
+        //return total / way.NodeIDs.Count;
+        return total / 2;
     }
 
     protected void CreateObject(OSMWay way, Material mat, string objectName) {
