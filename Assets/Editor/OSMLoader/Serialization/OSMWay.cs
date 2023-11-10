@@ -12,12 +12,14 @@ public class OSMWay : BaseOSM
     public float Height { get; private set; }
     public string Name { get; private set; }
     public int Lanes { get; private set; }
+    public string Color { get; private set; }
 
     public OSMWay(XmlNode node) {
         NodeIDs = new List<ulong>();
         Height = 3.0f;
         Lanes = 1;
         Name = "";
+        Color = "";
 
         ID = GetAttribute<ulong>("id", node.Attributes);
         Visible = GetAttribute<bool>("visible", node.Attributes);
@@ -53,6 +55,9 @@ public class OSMWay : BaseOSM
                     break;
                 case "name":
                     Name = GetAttribute<string>("v", t.Attributes);
+                    break;
+                case "building:colour":
+                    Color = GetAttribute<string>("v", t.Attributes);
                     break;
                 default:
                     break;

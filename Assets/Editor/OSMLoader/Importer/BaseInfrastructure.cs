@@ -13,15 +13,13 @@ internal abstract class BaseInfrastructure
   
     public abstract IEnumerable<int> Process();
 
-    // Problem Found Here?
     protected Vector3 GetCentre(OSMWay way) {
         Vector3 total = Vector3.zero;
 
         foreach(ulong id in way.NodeIDs)
             total += (Vector3)map.nodes[id];
 
-        //return total / way.NodeIDs.Count;
-        return total / 2;
+        return total / way.NodeIDs.Count;
     }
 
     protected void CreateObject(OSMWay way, Material mat, string objectName) {
@@ -35,6 +33,15 @@ internal abstract class BaseInfrastructure
         MeshRenderer mr = go.AddComponent<MeshRenderer>();
 
         mr.material = mat;
+        if (!string.IsNullOrEmpty(way.Color))
+        {
+            Color newCol;
+            if (!ColorUtility.TryParseHtmlString(way.Color, out newCol))
+                Debug.LogWarning("Failed to parse building color into RGB");
+            else
+                mr.material.color = newCol;
+
+        }
 
         List<Vector3> vectors = new List<Vector3>();
         List<Vector3> normals = new List<Vector3>();
