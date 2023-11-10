@@ -22,7 +22,7 @@ internal abstract class BaseInfrastructure
         return total / way.NodeIDs.Count;
     }
 
-    protected void CreateObject(OSMWay way, Material mat, string objectName) {
+    protected void CreateObject(OSMWay way, Material mat, string objectName, bool importColor, bool generateColliders) {
         objectName = string.IsNullOrEmpty(objectName) ? "OSMWay" : objectName;
 
         GameObject go = new GameObject(objectName);
@@ -33,14 +33,13 @@ internal abstract class BaseInfrastructure
         MeshRenderer mr = go.AddComponent<MeshRenderer>();
 
         mr.material = mat;
-        if (!string.IsNullOrEmpty(way.Color))
+        if (!string.IsNullOrEmpty(way.Color) && importColor)
         {
             Color newCol;
             if (!ColorUtility.TryParseHtmlString(way.Color, out newCol))
                 Debug.LogWarning("Failed to parse building color into RGB");
             else
                 mr.material.color = newCol;
-
         }
 
         List<Vector3> vectors = new List<Vector3>();
@@ -56,6 +55,9 @@ internal abstract class BaseInfrastructure
         mf.sharedMesh.triangles = indices.ToArray();
         mf.sharedMesh.uv = uvs.ToArray();
         // mf.sharedMesh.RecalculateNormals();
+
+        if (generateColliders)
+            go.AddComponent<BoxCollider>();
     }
 
     protected abstract void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices);

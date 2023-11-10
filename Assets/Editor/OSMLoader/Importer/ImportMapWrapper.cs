@@ -8,19 +8,26 @@ internal sealed class ImportMapWrapper {
     private Material roadMat;
     private Material buildingMat;
 
-    public ImportMapWrapper(DataImportWindow window, string osmDataFile, Material roadMaterial, Material buildingMaterial) {
-        importWindow = window;
-        dataFile = osmDataFile;
-        roadMat = roadMaterial;
-        buildingMat = buildingMaterial;
+    private bool importColors;
+    private bool generateColliders;
+
+    public ImportMapWrapper(DataImportWindow window, string osmDataFile, Material roadMaterial,
+                            Material buildingMaterial, bool importColors, bool generateColliders)
+    {
+        this.importWindow = window;
+        this.dataFile = osmDataFile;
+        this.roadMat = roadMaterial;
+        this.buildingMat = buildingMaterial;
+        this.importColors = importColors;
+        this.generateColliders = generateColliders;
     }
 
     public void Import() {
         MapReader mapReader = new MapReader();
         mapReader.Read(dataFile);
 
-        Road roadConstructor = new Road(mapReader, roadMat);
-        Building buildingConstructor = new Building(mapReader, buildingMat);
+        Road roadConstructor = new Road(mapReader, roadMat, generateColliders);
+        Building buildingConstructor = new Building(mapReader, buildingMat, importColors, generateColliders);
 
         Process(buildingConstructor, "Constructing Buildings...");
         Process(roadConstructor, "Constructing Roads...");

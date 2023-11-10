@@ -5,6 +5,8 @@ using UnityEngine;
 internal sealed class Building : BaseInfrastructure
 {
     private Material buildingMat;
+    private bool importColors;
+    private bool generateColliders;
 
     public override int NodeCount {
         get {
@@ -14,8 +16,11 @@ internal sealed class Building : BaseInfrastructure
         }
     }
 
-    public Building(MapReader mapReader, Material buildingMaterial) : base(mapReader) {
+    public Building(MapReader mapReader, Material buildingMaterial, bool importColors,
+                bool generateColliders) : base(mapReader) {
         buildingMat = buildingMaterial;
+        this.importColors = importColors;
+        this.generateColliders = generateColliders;
     }
 
     public override IEnumerable<int> Process() {
@@ -23,14 +28,16 @@ internal sealed class Building : BaseInfrastructure
 
         foreach (var way in map.ways.FindAll((w) => { return w.IsBuilding && w.NodeIDs.Count > 1; }))
         {
-            CreateObject(way, buildingMat, "Building");
+            CreateObject(way, buildingMat, "Building", importColors, generateColliders);
 
             count++;
             yield return count;
         }
     }
 
-    protected override void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices) {
+    protected override void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors,
+                                        List<Vector3> normals, List<Vector2> uvs,
+                                        List<int> indices) {
         Vector3 oTop = new Vector3(0, way.Height, 0);
 
         vectors.Add(oTop);

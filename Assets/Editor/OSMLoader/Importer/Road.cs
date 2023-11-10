@@ -5,13 +5,16 @@ using UnityEngine;
 internal sealed class Road : BaseInfrastructure
 {
     public Material roadMat;
+    private bool generateColliders;
 
     public override int NodeCount {
         get { return map.ways.FindAll((w) => { return w.IsRoad; }).Count; }
     }
 
-    public Road(MapReader mapReader, Material roadMaterial) : base(mapReader) {
+    public Road(MapReader mapReader, Material roadMaterial, bool generateColliders) : base(mapReader)
+    {
         roadMat = roadMaterial;
+        this.generateColliders = generateColliders;
     }
 
     public override IEnumerable<int> Process() {
@@ -19,14 +22,16 @@ internal sealed class Road : BaseInfrastructure
 
         foreach (var way in map.ways.FindAll((w) => { return w.IsRoad; }))
         {
-            CreateObject(way, roadMat, way.Name);
+            CreateObject(way, roadMat, way.Name, false, generateColliders);
 
             count++;
             yield return count;
         }
     }
 
-    protected override void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices) {
+    protected override void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors,
+                                        List<Vector3> normals, List<Vector2> uvs,
+                                        List<int> indices) {
         for (int i = 1; i < way.NodeIDs.Count; i++) {
             OSMNode p1 = map.nodes[way.NodeIDs[i - 1]];
             OSMNode p2 = map.nodes[way.NodeIDs[i]];

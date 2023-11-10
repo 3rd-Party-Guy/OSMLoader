@@ -17,6 +17,9 @@ public class DataImportWindow : EditorWindow {
     private bool isFileValid = false;
     private bool isImporting = false;
 
+    private bool importColors = false;
+    private bool generateColliders = false;
+
     [MenuItem("Window/OSMLoader/Data Importer")]
     private static void ShowWindow() {
         EditorWindow window = GetWindow<DataImportWindow>();
@@ -43,6 +46,10 @@ public class DataImportWindow : EditorWindow {
 
         roadMaterial = (Material)EditorGUILayout.ObjectField("Road Material", roadMaterial, typeof(Material), allowSceneObjects: false);
         buildingMaterial = (Material)EditorGUILayout.ObjectField("Building Material", buildingMaterial, typeof(Material), allowSceneObjects: false);
+        EditorGUILayout.Space();
+
+        importColors = EditorGUILayout.Toggle("Import Colors", importColors);
+        generateColliders = EditorGUILayout.Toggle("Generate Colliders", generateColliders);
         EditorGUILayout.Space();
         GUILayout.FlexibleSpace();
 
@@ -81,7 +88,9 @@ public class DataImportWindow : EditorWindow {
     private void OnImport() {
         isImporting = true;
 
-        ImportMapWrapper mapWrapper = new ImportMapWrapper(this, osmFilePath, roadMaterial, buildingMaterial);
+        ImportMapWrapper mapWrapper = new ImportMapWrapper(this, osmFilePath, roadMaterial,
+                                                        buildingMaterial, importColors,
+                                                        generateColliders);
         mapWrapper.Import();
 
         isImporting = false;
