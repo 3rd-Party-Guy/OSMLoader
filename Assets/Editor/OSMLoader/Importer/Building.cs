@@ -16,8 +16,9 @@ internal sealed class Building : BaseInfrastructure
         }
     }
 
-    public Building(MapReader mapReader, Material buildingMaterial, bool importColors,
-                bool generateColliders) : base(mapReader) {
+    public Building(GameObject parentObj, MapReader mapReader, Material buildingMaterial, bool importColors,
+                bool generateColliders) : base(mapReader, parentObj)
+    {
         buildingMat = buildingMaterial;
         this.importColors = importColors;
         this.generateColliders = generateColliders;

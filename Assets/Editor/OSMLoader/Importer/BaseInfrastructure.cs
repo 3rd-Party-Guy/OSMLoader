@@ -4,11 +4,13 @@ using UnityEngine;
 
 internal abstract class BaseInfrastructure
 {
+    private GameObject parentObj;
     protected MapReader map;
     public abstract int NodeCount { get; }
 
-    public BaseInfrastructure(MapReader mapReader) {
+    public BaseInfrastructure(MapReader mapReader, GameObject parentObj) {
         map = mapReader;
+        this.parentObj = parentObj;
     }
   
     public abstract IEnumerable<int> Process();
@@ -22,10 +24,13 @@ internal abstract class BaseInfrastructure
         return total / way.NodeIDs.Count;
     }
 
-    protected void CreateObject(OSMWay way, Material mat, string objectName, bool importColor, bool generateColliders) {
+    protected void CreateObject(OSMWay way, Material mat, string objectName,
+                            bool importColor, bool generateColliders) {
         objectName = string.IsNullOrEmpty(objectName) ? "OSMWay" : objectName;
 
         GameObject go = new GameObject(objectName);
+        go.transform.parent = parentObj.transform;
+
         Vector3 localOrigin = GetCentre(way);
         go.transform.position = localOrigin - map.bounds.Centre;
 
@@ -54,10 +59,10 @@ internal abstract class BaseInfrastructure
         mf.sharedMesh.normals = normals.ToArray();
         mf.sharedMesh.triangles = indices.ToArray();
         mf.sharedMesh.uv = uvs.ToArray();
-        // mf.sharedMesh.RecalculateNormals();
+
 
         if (generateColliders)
-            go.AddComponent<BoxCollider>();
+            go.AddComponent<MeshCollider>();
     }
 
     protected abstract void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices);

@@ -26,8 +26,11 @@ internal sealed class ImportMapWrapper {
         MapReader mapReader = new MapReader();
         mapReader.Read(dataFile);
 
-        Road roadConstructor = new Road(mapReader, roadMat, generateColliders);
-        Building buildingConstructor = new Building(mapReader, buildingMat, importColors, generateColliders);
+        GameObject parentObject = new GameObject("City");
+
+        Road roadConstructor = new Road(parentObject, mapReader, roadMat, generateColliders);
+        Building buildingConstructor = new Building(parentObject, mapReader, buildingMat, importColors, generateColliders);
+
 
         Process(buildingConstructor, "Constructing Buildings...");
         Process(roadConstructor, "Constructing Roads...");

@@ -11,7 +11,8 @@ internal sealed class Road : BaseInfrastructure
         get { return map.ways.FindAll((w) => { return w.IsRoad; }).Count; }
     }
 
-    public Road(MapReader mapReader, Material roadMaterial, bool generateColliders) : base(mapReader)
+    public Road(GameObject parentObj, MapReader mapReader, Material roadMaterial,
+            bool generateColliders) : base(mapReader, parentObj)
     {
         roadMat = roadMaterial;
         this.generateColliders = generateColliders;
