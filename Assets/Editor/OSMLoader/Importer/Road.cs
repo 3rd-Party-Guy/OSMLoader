@@ -4,17 +4,17 @@ using UnityEngine;
 
 internal sealed class Road : BaseInfrastructure
 {
-    public Material roadMat;
-    private bool generateColliders;
+    public Material[] roadMats;
+    private readonly bool generateColliders;
 
     public override int NodeCount {
         get { return map.ways.FindAll((w) => { return w.IsRoad; }).Count; }
     }
 
-    public Road(GameObject parentObj, MapReader mapReader, Material roadMaterial,
+    public Road(GameObject parentObj, MapReader mapReader, Material[] roadMaterials,
             bool generateColliders) : base(mapReader, parentObj)
     {
-        roadMat = roadMaterial;
+        roadMats = roadMaterials;
         this.generateColliders = generateColliders;
     }
 
@@ -23,7 +23,7 @@ internal sealed class Road : BaseInfrastructure
 
         foreach (var way in map.ways.FindAll((w) => { return w.IsRoad; }))
         {
-            CreateObject(way, roadMat, way.Name, false, generateColliders);
+            CreateObject(way, roadMats[Random.Range(0, roadMats.Length - 1)], way.Name, false, generateColliders);
 
             count++;
             yield return count;
@@ -42,7 +42,7 @@ internal sealed class Road : BaseInfrastructure
 
             Vector3 diff = (s2 - s1).normalized;
 
-            var cross = Vector3.Cross(diff, Vector3.up) * 3.7f * way.Lanes;
+            var cross = 3.7f * way.Lanes * Vector3.Cross(diff, Vector3.up);
 
             Vector3 v1 = s1 + cross;
             Vector3 v2 = s1 - cross;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 internal abstract class BaseInfrastructure
 {
-    private GameObject parentObj;
+    private readonly GameObject parentObj;
     protected MapReader map;
     public abstract int NodeCount { get; }
 
@@ -28,7 +28,7 @@ internal abstract class BaseInfrastructure
                             bool importColor, bool generateColliders) {
         objectName = string.IsNullOrEmpty(objectName) ? "OSMWay" : objectName;
 
-        GameObject go = new GameObject(objectName);
+        GameObject go = new(objectName);
         go.transform.parent = parentObj.transform;
 
         Vector3 localOrigin = GetCentre(way);
@@ -54,14 +54,16 @@ internal abstract class BaseInfrastructure
 
         OnObjectCreated(way, localOrigin, vectors, normals, uvs, indices, go);
 
-        mf.sharedMesh = new Mesh
+        var mesh = new Mesh
         {
             vertices = vectors.ToArray(),
             normals = normals.ToArray(),
             triangles = indices.ToArray(),
             uv = uvs.ToArray()
         };
+        mesh.Optimize();
 
+        mf.sharedMesh = mesh;
 
         if (generateColliders)
         {

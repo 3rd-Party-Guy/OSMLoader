@@ -3,33 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 
 internal sealed class ImportMapWrapper {
-    private DataImportWindow importWindow;
-    private string dataFile;
-    private Material roadMat;
-    private Material buildingMat;
+    private readonly DataImportWindow importWindow;
+    private readonly string dataFile;
 
-    private bool importColors;
-    private bool generateColliders;
+    private readonly Material[] roadMats;
+    private readonly Material[] buildingMats;
+    private readonly Material[] roofMats;
 
-    public ImportMapWrapper(DataImportWindow window, string osmDataFile, Material roadMaterial,
-                            Material buildingMaterial, bool importColors, bool generateColliders)
+    private readonly bool importColors;
+    private readonly bool generateColliders;
+
+    public ImportMapWrapper(DataImportWindow window, string osmDataFile, Material[] roadMaterials,
+                            Material[] buildingMaterials, Material[] roofMaterials, bool importColors, bool generateColliders)
     {
         this.importWindow = window;
         this.dataFile = osmDataFile;
-        this.roadMat = roadMaterial;
-        this.buildingMat = buildingMaterial;
+
+        this.roadMats = roadMaterials;
+        this.buildingMats = buildingMaterials;
+        this.roofMats = roofMaterials;
+
         this.importColors = importColors;
         this.generateColliders = generateColliders;
     }
 
     public void Import() {
-        MapReader mapReader = new MapReader();
+        MapReader mapReader = new();
         mapReader.Read(dataFile);
 
-        GameObject parentObject = new GameObject("City");
+        GameObject parentObject = new("City");
 
-        Road roadConstructor = new Road(parentObject, mapReader, roadMat, generateColliders);
-        Building buildingConstructor = new Building(parentObject, mapReader, buildingMat, importColors, generateColliders);
+        Road roadConstructor = new(parentObject, mapReader, roadMats, generateColliders);
+        Building buildingConstructor = new(parentObject, mapReader, buildingMats, roofMats, importColors, generateColliders);
 
         Process(buildingConstructor, "Constructing Buildings...");
         Process(roadConstructor, "Constructing Roads...");

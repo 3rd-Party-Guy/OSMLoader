@@ -5,9 +5,11 @@ using UnityEngine;
 
 internal sealed class Building : BaseInfrastructure
 {
-    private Material buildingMat;
-    private bool importColors;
-    private bool generateColliders;
+    private readonly Material[] buildingMats;
+    private readonly Material[] roofMats;
+
+    private readonly bool importColors;
+    private readonly bool generateColliders;
 
     public override int NodeCount {
         get {
@@ -17,10 +19,12 @@ internal sealed class Building : BaseInfrastructure
         }
     }
 
-    public Building(GameObject parentObj, MapReader mapReader, Material buildingMaterial, bool importColors,
-                bool generateColliders) : base(mapReader, parentObj)
+    public Building(GameObject parentObj, MapReader mapReader, Material[] buildingMaterials, Material[] roofMaterials,
+                bool importColors, bool generateColliders) : base(mapReader, parentObj)
     {
-        buildingMat = buildingMaterial;
+        buildingMats = buildingMaterials;
+        roofMats = roofMaterials;
+
         this.importColors = importColors;
         this.generateColliders = generateColliders;
     }
@@ -30,7 +34,7 @@ internal sealed class Building : BaseInfrastructure
 
         foreach (var way in map.ways.FindAll((w) => { return w.IsBuilding && w.NodeIDs.Count > 1; }))
         {
-            CreateObject(way, buildingMat, "Building", importColors, generateColliders);
+            CreateObject(way, buildingMats[Random.Range(0, buildingMats.Length - 1)], "Building", importColors, generateColliders);
 
             count++;
             yield return count;
@@ -40,7 +44,7 @@ internal sealed class Building : BaseInfrastructure
     protected override void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors,
                                         List<Vector3> normals, List<Vector2> uvs,
                                         List<int> indices, GameObject goBuilding = null) {
-        Vector3 oTop = new Vector3(0, way.Height, 0);
+        Vector3 oTop = new(0, way.Height, 0);
 
         vectors.Add(oTop);
         normals.Add(Vector3.up);
@@ -109,28 +113,34 @@ internal sealed class Building : BaseInfrastructure
                 0
             };
 
-            CreateRooftopTile(goBuilding, way.Height, roofIndices, vectors, normals, uvs);
+            CreateRooftopTile(goBuilding, roofIndices, vectors, normals, uvs);
             CombineRooftop(goBuilding);
         }
     }
 
-    private void CreateRooftopTile(GameObject parentObj, float height,
-                            List<int> indices, List<Vector3> vectors,
-                            List<Vector3> normals, List<Vector2> uvs)
+    private void CreateRooftopTile(GameObject parentObj, List<int> indices,
+                                List<Vector3> vectors, List<Vector3> normals,
+                                List<Vector2> uvs)
     {
-        GameObject goRoof = new GameObject("RooftopTile");
+        GameObject goRoof = new("RooftopTile");
         goRoof.transform.position = parentObj.transform.position;
         goRoof.transform.parent = parentObj.transform;
 
         MeshFilter mf = goRoof.AddComponent<MeshFilter>();
+        MeshRenderer mr = goRoof.AddComponent<MeshRenderer>();
 
-        mf.sharedMesh = new Mesh
+        mr.material = roofMats[Random.Range(0, roofMats.Length - 1)];
+
+        var mesh = new Mesh
         {
             vertices = vectors.ToArray(),
             normals = normals.ToArray(),
             triangles = indices.ToArray(),
             uv = uvs.ToArray()
         };
+        mesh.Optimize();
+
+        mf.sharedMesh = mesh;
     }
 
     private void CombineRooftop(GameObject parentObj)
@@ -157,7 +167,7 @@ internal sealed class Building : BaseInfrastructure
         var mf = goRoof.AddComponent<MeshFilter>();
         var mr = goRoof.AddComponent<MeshRenderer>();
         
-        mr.material = buildingMat;
+        mr.material = roofMats[Random.Range(0, roofMats.Length - 1)];
 
         mf.sharedMesh = finalRoofMesh;
 
