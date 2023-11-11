@@ -47,23 +47,31 @@ internal abstract class BaseInfrastructure
                 mr.material.color = newCol;
         }
 
-        List<Vector3> vectors = new List<Vector3>();
-        List<Vector3> normals = new List<Vector3>();
-        List<Vector2> uvs = new List<Vector2>();
-        List<int> indices = new List<int>();
+        List<Vector3> vectors = new();
+        List<Vector3> normals = new();
+        List<Vector2> uvs = new();
+        List<int> indices = new();
 
-        OnObjectCreated(way, localOrigin, vectors, normals, uvs, indices);
+        OnObjectCreated(way, localOrigin, vectors, normals, uvs, indices, go);
 
-        mf.sharedMesh = new Mesh();
-        mf.sharedMesh.vertices = vectors.ToArray();
-        mf.sharedMesh.normals = normals.ToArray();
-        mf.sharedMesh.triangles = indices.ToArray();
-        mf.sharedMesh.uv = uvs.ToArray();
+        mf.sharedMesh = new Mesh
+        {
+            vertices = vectors.ToArray(),
+            normals = normals.ToArray(),
+            triangles = indices.ToArray(),
+            uv = uvs.ToArray()
+        };
 
 
         if (generateColliders)
-            go.AddComponent<MeshCollider>();
+        {
+            var col = go.AddComponent<MeshCollider>();
+            col.convex = true;
+        }
     }
 
-    protected abstract void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices);
+    protected abstract void OnObjectCreated(OSMWay way, Vector3 origin,
+                                            List<Vector3> vectors, List<Vector3> normals,
+                                            List<Vector2> uvs, List<int> indices,
+                                            GameObject goBuilding = null);
 }

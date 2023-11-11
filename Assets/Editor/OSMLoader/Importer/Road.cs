@@ -32,7 +32,7 @@ internal sealed class Road : BaseInfrastructure
 
     protected override void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors,
                                         List<Vector3> normals, List<Vector2> uvs,
-                                        List<int> indices) {
+                                        List<int> indices, GameObject goBuilding = null) {
         for (int i = 1; i < way.NodeIDs.Count; i++) {
             OSMNode p1 = map.nodes[way.NodeIDs[i - 1]];
             OSMNode p2 = map.nodes[way.NodeIDs[i]];

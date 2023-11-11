@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 internal sealed class Building : BaseInfrastructure
@@ -38,7 +39,7 @@ internal sealed class Building : BaseInfrastructure
 
     protected override void OnObjectCreated(OSMWay way, Vector3 origin, List<Vector3> vectors,
                                         List<Vector3> normals, List<Vector2> uvs,
-                                        List<int> indices) {
+                                        List<int> indices, GameObject goBuilding = null) {
         Vector3 oTop = new Vector3(0, way.Height, 0);
 
         vectors.Add(oTop);
@@ -95,15 +96,72 @@ internal sealed class Building : BaseInfrastructure
             indices.Add(idx4);
             indices.Add(idx3);
 
-            // roof triangle
-            indices.Add(0);
-            indices.Add(idx3);
-            indices.Add(idx4);
-            
-            // updside down
-            indices.Add(idx4);
-            indices.Add(idx3);
-            indices.Add(0);
+            List<int> roofIndices = new()
+            {
+                // roof triangle
+                0,
+                idx3,
+                idx4,
+
+                // updside down
+                idx4,
+                idx3,
+                0
+            };
+
+            CreateRooftopTile(goBuilding, way.Height, roofIndices, vectors, normals, uvs);
+            CombineRooftop(goBuilding);
         }
+    }
+
+    private void CreateRooftopTile(GameObject parentObj, float height,
+                            List<int> indices, List<Vector3> vectors,
+                            List<Vector3> normals, List<Vector2> uvs)
+    {
+        GameObject goRoof = new GameObject("RooftopTile");
+        goRoof.transform.position = parentObj.transform.position;
+        goRoof.transform.parent = parentObj.transform;
+
+        MeshFilter mf = goRoof.AddComponent<MeshFilter>();
+
+        mf.sharedMesh = new Mesh
+        {
+            vertices = vectors.ToArray(),
+            normals = normals.ToArray(),
+            triangles = indices.ToArray(),
+            uv = uvs.ToArray()
+        };
+    }
+
+    private void CombineRooftop(GameObject parentObj)
+    {
+        GameObject goRoof = new("Rooftop");
+        List<MeshFilter> roofTiles = new();
+
+        foreach (Transform roofTile in parentObj.transform)
+            roofTiles.Add(roofTile.GetComponent<MeshFilter>());
+
+        var combine = new CombineInstance[roofTiles.Count];
+        for (int i = 0; i < roofTiles.Count; i++)
+        {
+            combine[i].mesh = roofTiles[i].sharedMesh;
+            combine[i].transform = roofTiles[i].transform.localToWorldMatrix;
+        }
+
+        foreach (Transform roofTile in parentObj.transform)
+            GameObject.DestroyImmediate(roofTile.gameObject);
+
+        var finalRoofMesh = new Mesh();
+        finalRoofMesh.CombineMeshes(combine);
+
+        var mf = goRoof.AddComponent<MeshFilter>();
+        var mr = goRoof.AddComponent<MeshRenderer>();
+        
+        mr.material = buildingMat;
+
+        mf.sharedMesh = finalRoofMesh;
+
+        goRoof.transform.position = parentObj.transform.position;
+        goRoof.transform.parent = parentObj.transform;
     }
 }
