@@ -114,8 +114,9 @@ internal sealed class Building : BaseInfrastructure
             };
 
             CreateRooftopTile(goBuilding, roofIndices, vectors, normals, uvs);
-            CombineRooftop(goBuilding);
         }
+
+        CombineRooftop(goBuilding);
     }
 
     private void CreateRooftopTile(GameObject parentObj, List<int> indices,
@@ -146,32 +147,35 @@ internal sealed class Building : BaseInfrastructure
     private void CombineRooftop(GameObject parentObj)
     {
         GameObject goRoof = new("Rooftop");
+
         List<MeshFilter> roofTiles = new();
 
         foreach (Transform roofTile in parentObj.transform)
             roofTiles.Add(roofTile.GetComponent<MeshFilter>());
 
+        Debug.Log("Rooftiles Amount" +  roofTiles.Count);
         var combine = new CombineInstance[roofTiles.Count];
         for (int i = 0; i < roofTiles.Count; i++)
         {
             combine[i].mesh = roofTiles[i].sharedMesh;
+            Debug.Log("Rooftop Tile Vertex Count: " + roofTiles[i].sharedMesh.vertexCount);
             combine[i].transform = roofTiles[i].transform.localToWorldMatrix;
         }
-
-        foreach (Transform roofTile in parentObj.transform)
-            GameObject.DestroyImmediate(roofTile.gameObject);
 
         var finalRoofMesh = new Mesh();
         finalRoofMesh.CombineMeshes(combine);
 
         var mf = goRoof.AddComponent<MeshFilter>();
         var mr = goRoof.AddComponent<MeshRenderer>();
-        
+
+        finalRoofMesh.Optimize();
+        mf.sharedMesh = finalRoofMesh;
         mr.material = roofMats[Random.Range(0, roofMats.Length - 1)];
 
-        mf.sharedMesh = finalRoofMesh;
+        foreach (Transform roofTile in parentObj.transform)
+            GameObject.DestroyImmediate(roofTile.gameObject);
 
-        goRoof.transform.position = parentObj.transform.position;
         goRoof.transform.parent = parentObj.transform;
+        //goRoof.transform.position = parentObj.transform.position;
     }
 }
