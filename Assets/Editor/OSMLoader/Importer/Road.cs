@@ -23,7 +23,11 @@ internal sealed class Road : BaseInfrastructure
 
         foreach (var way in map.ways.FindAll((w) => { return w.IsRoad; }))
         {
-            CreateObject(way, roadMats[Random.Range(0, roadMats.Length - 1)], way.Name, false, generateColliders);
+            Material mat = null;
+            if (roadMats.Length > 0)
+                mat = roadMats[Random.Range(0, roadMats.Length - 1)];
+
+            CreateObject(way, mat, way.Name, false, generateColliders);
 
             count++;
             yield return count;

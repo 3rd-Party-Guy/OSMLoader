@@ -34,7 +34,11 @@ internal sealed class Building : BaseInfrastructure
 
         foreach (var way in map.ways.FindAll((w) => { return w.IsBuilding && w.NodeIDs.Count > 1; }))
         {
-            CreateObject(way, buildingMats[Random.Range(0, buildingMats.Length - 1)], "Building", importColors, generateColliders);
+            Material mat = null;
+            if (buildingMats.Length > 0)
+                mat = buildingMats[Random.Range(0, buildingMats.Length - 1)];
+
+            CreateObject(way, mat, "Building", importColors, generateColliders);
 
             count++;
             yield return count;
@@ -128,9 +132,6 @@ internal sealed class Building : BaseInfrastructure
         goRoof.transform.parent = parentObj.transform;
 
         MeshFilter mf = goRoof.AddComponent<MeshFilter>();
-        MeshRenderer mr = goRoof.AddComponent<MeshRenderer>();
-
-        mr.material = roofMats[Random.Range(0, roofMats.Length - 1)];
 
         var mesh = new Mesh
         {
@@ -170,7 +171,12 @@ internal sealed class Building : BaseInfrastructure
 
         finalRoofMesh.Optimize();
         mf.sharedMesh = finalRoofMesh;
-        mr.material = roofMats[Random.Range(0, roofMats.Length - 1)];
+
+        Material mat = null;
+        if (roofMats.Length > 0)
+            mat = roofMats[Random.Range(0, roofMats.Length - 1)];
+
+        mr.material = mat;
 
         foreach (Transform roofTile in parentObj.transform)
             GameObject.DestroyImmediate(roofTile.gameObject);
