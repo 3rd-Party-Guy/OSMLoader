@@ -154,12 +154,10 @@ internal sealed class Building : BaseInfrastructure
         foreach (Transform roofTile in parentObj.transform)
             roofTiles.Add(roofTile.GetComponent<MeshFilter>());
 
-        Debug.Log("Rooftiles Amount" +  roofTiles.Count);
         var combine = new CombineInstance[roofTiles.Count];
         for (int i = 0; i < roofTiles.Count; i++)
         {
             combine[i].mesh = roofTiles[i].sharedMesh;
-            Debug.Log("Rooftop Tile Vertex Count: " + roofTiles[i].sharedMesh.vertexCount);
             combine[i].transform = roofTiles[i].transform.localToWorldMatrix;
         }
 
@@ -182,6 +180,5 @@ internal sealed class Building : BaseInfrastructure
             GameObject.DestroyImmediate(roofTile.gameObject);
 
         goRoof.transform.parent = parentObj.transform;
-        //goRoof.transform.position = parentObj.transform.position;
     }
 }

@@ -62,7 +62,6 @@ internal abstract class BaseInfrastructure
             uv = uvs.ToArray()
         };
         mesh.Optimize();
-
         mf.sharedMesh = mesh;
 
         if (generateColliders)
