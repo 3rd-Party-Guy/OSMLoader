@@ -2,6 +2,7 @@
 This is a tool that imports OSM data into Unity as 3D objects. It is useful for visualizing cities and roadways.
 
 ## Features
+```[tasklist]
 ✔️ OSM XML Support
 ✔️ Mesh Optimization
 ✔️ OSM Color Import Support
@@ -10,6 +11,7 @@ This is a tool that imports OSM data into Unity as 3D objects. It is useful for 
 ✔️ Multiple Materials for each type (Road, Building, or Roof)
 ✔️ Simple Plug'N'Play Setup
 ⌛ OSM PBF Support
+```
 
 ## Installation
 The installation is very simple. Just clone the repository inside of your `Assets/Editor` folder.
