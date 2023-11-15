@@ -14,7 +14,7 @@ internal sealed class Road : BaseInfrastructure
     public Road(GameObject parentObj, MapReader mapReader, Material[] roadMaterials,
             bool generateColliders) : base(mapReader, parentObj)
     {
-        roadMats = roadMaterials;
+        this.roadMats = roadMaterials;
         this.generateColliders = generateColliders;
     }
 

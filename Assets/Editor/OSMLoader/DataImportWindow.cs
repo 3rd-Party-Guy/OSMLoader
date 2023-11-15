@@ -67,8 +67,6 @@ public class DataImportWindow : EditorWindow
         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(roofMaterials)), true);
         serializedObject.ApplyModifiedProperties();
 
-        //roadMaterial = (Material)EditorGUILayout.ObjectField("Road Material", roadMaterial, typeof(Material), allowSceneObjects: false);
-        //buildingMaterial = (Material)EditorGUILayout.ObjectField("Building Material", buildingMaterial, typeof(Material), allowSceneObjects: false);
         EditorGUILayout.Space();
 
         GUILayout.Label("Import Settings", EditorStyles.boldLabel);

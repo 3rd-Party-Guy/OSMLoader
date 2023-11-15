@@ -9,7 +9,7 @@ internal abstract class BaseInfrastructure
     public abstract int NodeCount { get; }
 
     public BaseInfrastructure(MapReader mapReader, GameObject parentObj) {
-        map = mapReader;
+        this.map = mapReader;
         this.parentObj = parentObj;
     }
   
@@ -65,10 +65,7 @@ internal abstract class BaseInfrastructure
         mf.sharedMesh = mesh;
 
         if (generateColliders)
-        {
-            var col = go.AddComponent<MeshCollider>();
-            col.convex = true;
-        }
+            go.AddComponent<MeshCollider>();
     }
 
     protected abstract void OnObjectCreated(OSMWay way, Vector3 origin,
