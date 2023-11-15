@@ -35,15 +35,12 @@ internal sealed class Building : BaseInfrastructure
 
         foreach (var way in map.ways.FindAll((w) => { return w.IsBuilding && w.NodeIDs.Count > 1; }))
         {
-<<<<<<< Updated upstream
             Material mat = null;
             if (buildingMats.Length > 0)
                 mat = buildingMats[Random.Range(0, buildingMats.Length - 1)];
 
             CreateObject(way, mat, "Building", importColors, generateColliders);
-=======
             CreateObject(way, buildingMats[Random.Range(0, buildingMats.Length)], "Building", importColors, generateColliders);
->>>>>>> Stashed changes
 
             count++;
             yield return count;
@@ -185,10 +182,7 @@ internal sealed class Building : BaseInfrastructure
             GameObject.DestroyImmediate(roofTile.gameObject);
 
         goRoof.transform.parent = parentObj.transform;
-<<<<<<< Updated upstream
-=======
 
         goRoof.AddComponent<MeshCollider>();
->>>>>>> Stashed changes
     }
 }
