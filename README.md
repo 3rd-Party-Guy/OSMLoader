@@ -10,7 +10,7 @@ This is a tool that imports OSM data into Unity as 3D objects. It is useful for 
 ✔️ Separation between Roads, Buildings, and Roofs
 ✔️ Multiple Materials for each type (Road, Building, or Roof)
 ✔️ Simple Plug'N'Play Setup
-⌛ OSM PBF Support
+⌛ Unit Tests
 ```
 
 ## Installation
