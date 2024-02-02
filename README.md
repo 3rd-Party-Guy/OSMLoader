@@ -16,7 +16,7 @@ This is a tool that imports OSM data into Unity as 3D objects. It is useful for 
 ## Installation
 The installation is very simple. Just clone the repository inside of your `Assets/Editor` folder.
 ```
-git clone github.com/3rd-Party-Guy/OSMLoader Assets/Editor/
+git clone https://github.com/3rd-Party-Guy/OSMLoader Assets/Editor/
 ```
 
 ## Showcase
