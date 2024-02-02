@@ -21,3 +21,4 @@ git clone https://github.com/3rd-Party-Guy/OSMLoader Assets/Editor/
 
 ## Showcase
 ![Example of Heidelberg, Altstadt generated inside Unity](https://media.discordapp.net/attachments/1160967148781453333/1174326353819074560/Unity_1JXVlaRA1M.png)
+![OSMLoader GUI Showcase](https://i.imgur.com/jUDAOnC.png)
