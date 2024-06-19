@@ -1,0 +1,11 @@
+{
+    "name": "com.nikolayhadzhiev.osmloader",
+    "version": "1.0.7",
+    "displayName": "OSMLoader",
+    "description": "Generates cities/infrastructure based on OSM data",
+    "unity": "2022.1",
+    "author": {
+        "name": "Nikolay Hadzhiev",
+        "url": "https://github.com/3rd-Party-Guy",
+    }
+}
