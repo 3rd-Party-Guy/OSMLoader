@@ -11,6 +11,7 @@ This is a tool that imports OSM data into Unity as 3D objects. It is useful for 
 ✔️ Multiple Materials for each type (Road, Building, or Roof)
 ✔️ Simple Plug'N'Play Setup
 ✔️ Unit Tests
+✔️ Integrate UPM
 ```
 
 ## Installation
