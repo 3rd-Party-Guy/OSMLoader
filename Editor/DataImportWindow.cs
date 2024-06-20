@@ -26,11 +26,11 @@ public class DataImportWindow : EditorWindow
     private bool importColors = false;
     private bool generateColliders = false;
 
-    [MenuItem("Window/OSMLoader/Data Importer")]
+    [MenuItem("Tools/OSMLoader")]
     private static void ShowWindow()
     {
         EditorWindow window = GetWindow<DataImportWindow>();
-        window.titleContent = new GUIContent("Data Importer");
+        window.titleContent = new GUIContent("OSMLoader");
         window.Show();
     }
 
